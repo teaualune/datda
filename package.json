@@ -4,11 +4,11 @@
   "description": "MongoDB <--> RethinkDB : Import databases between MongoDB and RethinkDB.",
   "main": "lib/datda.js",
   "dependencies": {
+    "aws-sdk": "^2.100.0",
     "bluebird": "^2.9.25",
     "cli": "^0.6.6",
-    "lodash": "^3.8.0",
     "mongodb": "^2.0.28",
-    "rethinkdb": "^2.0.0",
+    "rethinkdb": "2.2.3",
     "rethinkdb-init": "^0.0.3"
   },
   "preferGlobal": true,

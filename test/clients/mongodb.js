@@ -1,5 +1,4 @@
 require('should');
-var _ = require('lodash');
 var q = require('q');
 var Promise = require('bluebird');
 var MongoDriver = require('../../lib/clients/mongodb');
@@ -130,7 +129,7 @@ describe('MongoDB', function () {
     it('should get all the tables in the database as an object with a name property', function (done) {
       mongo.getTables()
         .then(function (collections) {
-          _.pluck(collections, 'name').sort().should.eql(tables.sort());
+          collections.map(collection => collection.name).sort().should.eql(tables.sort());
           done();
         });
     });
@@ -138,9 +137,11 @@ describe('MongoDB', function () {
     it('should provide the primary key for every table', function (done) {
       mongo.getTables()
         .then(function (collections) {
-          var primaryKeys = _.pluck(collections, 'primaryKey');
+          var primaryKeys = collections.map(collection => collection.primaryKey);
           primaryKeys.length.should.equal(collections.length);
-          _.unique(primaryKeys).should.eql(['_id']);
+          for (let primaryKey of primaryKeys) {
+            primaryKey.should.eql('_id');
+          }
           done();
         })
         .catch(done);
@@ -163,7 +164,7 @@ describe('MongoDB', function () {
           return mongo.getTables();
         })
         .then(function (_tables) {
-          _.pluck(tables, 'name').sort().should.eql(_.pluck(tables, 'name').sort());
+          tables.map(table => table.name).sort().should.eql(_tables.map(table => table.name).sort());
           done();
         })
         .catch(done);

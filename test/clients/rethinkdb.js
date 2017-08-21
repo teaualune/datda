@@ -1,5 +1,4 @@
 require('should');
-var _ = require('lodash');
 var q = require('q');
 var Promise = require('bluebird');
 var RethinkDBDriver = require('../../lib/clients/rethinkdb');
@@ -137,7 +136,7 @@ describe('RethinkDB', function () {
     it('should get all the tables in the database as an object with a name property', function (done) {
       rdb.getTables()
         .then(function (_tables) {
-          _.pluck(_tables, 'name').sort().should.eql(tables.sort());
+          _tables.map(table => table.name).sort().should.eql(tables.sort());
           done();
         });
     });
@@ -145,9 +144,11 @@ describe('RethinkDB', function () {
     it('should provide the primary key for every table', function (done) {
       rdb.getTables()
         .then(function (_tables) {
-          var primaryKeys = _.pluck(_tables, 'primaryKey');
+          var primaryKeys = tables.map(table => table.primaryKey);
           primaryKeys.length.should.equal(tables.length);
-          _.unique(primaryKeys).should.eql(['id']);
+          for (let primaryKey of primaryKeys) {
+            primaryKey.should.eql('id');
+          }
           done();
         })
         .catch(done);
@@ -170,7 +171,7 @@ describe('RethinkDB', function () {
           return rdb.getTables();
         })
         .then(function (_tables) {
-          _.pluck(tables, 'name').sort().should.eql(_.pluck(tables, 'name').sort());
+          tables.map(table => table.name).sort().should.eql(_tables.map(table => table.name).sort());
           done();
         })
         .catch(done);
@@ -185,8 +186,8 @@ describe('RethinkDB', function () {
           return rdb.getTables();
         })
         .then(function (_tables) {
-          _.pluck(tables, 'name').should.eql(['not_id']);
-          _.pluck(tables, 'primaryKey').should.eql(['not_id']);
+          tables.map(table => table.name).should.eql(['not_id']);
+          tables.map(table => table.primaryKey).should.eql(['not_id']);
           done();
         })
         .catch(done);
@@ -219,7 +220,7 @@ describe('RethinkDB', function () {
           rows.should.be.an.Array;
           rows.length.should.equal(3);
           // NOTE: You can't guarantee the order of the documents
-          _.pluck(rows, 'number').sort().should.eql([1, 2, 3]);
+          rows.map(row => row.number).sort().should.eql([1, 2, 3]);
           done();
         });
     });

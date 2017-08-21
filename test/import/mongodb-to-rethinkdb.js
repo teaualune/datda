@@ -1,7 +1,6 @@
 var should = require('should');
 var r = require('rethinkdb');
 var Promise = require('bluebird');
-var _ = require('lodash');
 var mongoClient = Promise.promisifyAll(require('mongodb').MongoClient);
 
 var testData = require('../data.json');

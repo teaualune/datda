@@ -1,6 +1,8 @@
 # datda
 
-Import databases between MongoDB and RethinkDB.
+**Forked from github.com/thejsj/datda**
+
+Import databases between MongoDB and RethinkDB, or importing data into DynamoDB.
 
 This module helps you easily import MongoDB database into RethinkDB and back. The implementation is very simple. datda merely gets all the collecitons/tables in your database and gets all the documents/rows in that collectiont/table and inserts them into the other database. The beauty of JSON document stores.
 
