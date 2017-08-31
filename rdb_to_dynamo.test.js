@@ -15,7 +15,13 @@ datda({
     },
     insertionLatency: 1000,
     rowsPerBatch: 25,
-    rowOffset: 1000,
+    rowOffset: 0,
+    tableConfig: {
+        users: {
+            rowOffset: 0,
+            requiredFields: ['id'] // skip rows without id field
+        }
+    },
     blacklist: [],
     whitelist: []
 })
